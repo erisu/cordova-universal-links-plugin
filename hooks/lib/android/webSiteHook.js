@@ -10,11 +10,13 @@ https://developer.android.com/training/app-indexing/enabling-app-indexing.html
 var fs = require('fs');
 var path = require('path');
 var mkpath = require('mkpath');
-var ConfigXmlHelper = require('../configXmlHelper.js');
 var WEB_HOOK_FILE_PATH = path.join('ul_web_hooks', 'android', 'android_web_hook.html');
-var WEB_HOOK_TPL_FILE_PATH = path.join('plugins', 'cordova-universal-links-plugin', 'ul_web_hooks', 'android_web_hook_tpl.html');
+var WEB_HOOK_TPL_FILE_PATH = path.join('plugins/@gedysintraware/cordova-universal-links-plugin/ul_web_hooks/android_web_hook_tpl.html');
 var LINK_PLACEHOLDER = '[__LINKS__]';
 var LINK_TEMPLATE = '<link rel="alternate" href="android-app://<package_name>/<scheme>/<host><path>" />';
+
+const ExtendedConfigParser = require('../ExtendedConfigParser.js');
+const { CONFIG_FILE_NAME, PLATFORM_ANDROID } = require('../constants.js');
 
 module.exports = {
   generate: generateWebHook
@@ -30,8 +32,10 @@ module.exports = {
  */
 function generateWebHook(cordovaContext, pluginPreferences) {
   var projectRoot = cordovaContext.opts.projectRoot;
-  var configXmlHelper = new ConfigXmlHelper(cordovaContext);
-  var packageName = configXmlHelper.getPackageName('android');
+
+  const configFilePath = path.join(projectRoot, CONFIG_FILE_NAME);
+  const configFile = new ExtendedConfigParser(configFilePath);
+  var packageName = configFile.getPackageName(PLATFORM_ANDROID);
   var template = readTemplate(projectRoot);
 
   // if template was not found - exit

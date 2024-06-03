@@ -9,7 +9,10 @@ Script only generates content. File it self is included in the xcode project in 
 var path = require('path');
 var fs = require('fs');
 var plist = require('plist');
-var ConfigXmlHelper = require('../configXmlHelper.js');
+
+const ExtendedConfigParser = require('../ExtendedConfigParser.js');
+const { CONFIG_FILE_NAME } = require('../constants.js');
+
 var ASSOCIATED_DOMAINS = 'com.apple.developer.associated-domains';
 var context;
 var projectName;
@@ -158,8 +161,9 @@ function getProjectRoot() {
  */
 function getProjectName() {
   if (projectName === undefined) {
-    var configXmlHelper = new ConfigXmlHelper(context);
-    projectName = configXmlHelper.getProjectName();
+    const configFilePath = path.join(getProjectRoot(), CONFIG_FILE_NAME);
+    const configFile = new ExtendedConfigParser(configFilePath);
+    projectName = configFile.name();
   }
 
   return projectName;

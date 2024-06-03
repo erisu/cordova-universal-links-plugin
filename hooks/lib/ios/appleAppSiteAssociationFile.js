@@ -21,7 +21,10 @@ var path = require('path');
 var mkpath = require('mkpath');
 var fs = require('fs');
 var rimraf = require('rimraf');
-var ConfigXmlHelper = require('../configXmlHelper.js');
+
+const ExtendedConfigParser = require('../ExtendedConfigParser.js');
+const { CONFIG_FILE_NAME, PLATFORM_IOS } = require('../constants.js');
+
 var IOS_TEAM_ID = '<YOUR_TEAM_ID_FROM_MEMBER_CENTER>';
 var ASSOCIATION_FILE_NAME = 'apple-app-site-association';
 var bundleId;
@@ -163,8 +166,9 @@ function getProjectRoot() {
  */
 function getBundleId() {
   if (bundleId === undefined) {
-    var configXmlHelper = new ConfigXmlHelper(context);
-    bundleId = configXmlHelper.getPackageName('ios');
+    const configFilePath = path.join(getProjectRoot(), CONFIG_FILE_NAME);
+    const configFile = new ExtendedConfigParser(configFilePath);
+    bundleId = configFile.getPackageName(PLATFORM_IOS);
   }
 
   return bundleId;
