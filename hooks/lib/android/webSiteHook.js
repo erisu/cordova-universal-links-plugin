@@ -9,7 +9,6 @@ https://developer.android.com/training/app-indexing/enabling-app-indexing.html
 
 var fs = require('node:fs');
 var path = require('node:path');
-var mkpath = require('mkpath');
 var WEB_HOOK_FILE_PATH = path.join('ul_web_hooks', 'android', 'android_web_hook.html');
 var WEB_HOOK_TPL_FILE_PATH = path.join('plugins/@gedysintraware/cordova-universal-links-plugin/ul_web_hooks/android_web_hook_tpl.html');
 var LINK_PLACEHOLDER = '[__LINKS__]';
@@ -157,7 +156,7 @@ function saveWebHook(projectRoot, hookContent) {
  */
 function createDirectoryIfNeeded(dir) {
   try {
-    mkpath.sync(dir);
+    fs.mkdirSync(dir, { recursive: true });
   } catch (err) {
     console.log(err);
   }
