@@ -19,7 +19,6 @@ Additional documentation regarding apple-app-site-association file can be found 
 
 var path = require('node:path');
 var fs = require('node:fs');
-var rimraf = require('rimraf');
 
 const ExtendedConfigParser = require('../ExtendedConfigParser.js');
 const { CONFIG_FILE_NAME, PLATFORM_IOS } = require('../constants.js');
@@ -55,7 +54,7 @@ function generate(cordovaContext, pluginPreferences) {
  * Remove old files from ul_web_hooks/ios folder.
  */
 function removeOldFiles() {
-  rimraf.sync(getWebHookDirectory());
+  fs.rmSync(getWebHookDirectory(), { recursive: true, force: true });
 }
 
 /**
