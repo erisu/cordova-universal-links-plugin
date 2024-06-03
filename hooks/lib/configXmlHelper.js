@@ -9,8 +9,6 @@ const { ConfigParser } = require('cordova-common');
 var ANDROID = 'android';
 var IOS = 'ios';
 var CONFIG_FILE_NAME = 'config.xml';
-var context;
-var projectRoot;
 
 module.exports = ConfigXmlHelper;
 
@@ -21,9 +19,9 @@ module.exports = ConfigXmlHelper;
  *
  * @param {Object} cordovaContext - cordova context object
  */
-function ConfigXmlHelper(cordovaContext) {
-  context = cordovaContext;
-  projectRoot = context.opts.projectRoot;
+function ConfigXmlHelper(ctx) {
+  this.configFilePath = path.join(ctx.opts.projectRoot, CONFIG_FILE_NAME);
+  this.configFile = new ConfigParser(this.configFilePath);
 }
 
 /**
@@ -32,9 +30,7 @@ function ConfigXmlHelper(cordovaContext) {
  * @return {Object} JSON object with data from config.xml
  */
 ConfigXmlHelper.prototype.read = function() {
-  var filePath = getConfigXmlFilePath();
-
-  return xmlHelper.readXmlAsJson(filePath);
+  return xmlHelper.readXmlAsJson(this.configFilePath);
 }
 
 /**
@@ -44,24 +40,18 @@ ConfigXmlHelper.prototype.read = function() {
  * @return {String} package/bundle name
  */
 ConfigXmlHelper.prototype.getPackageName = function(platform) {
-  var configFilePath = getConfigXmlFilePath();
-  var config = getCordovaConfigParser(configFilePath);
   var packageName;
 
   switch (platform) {
     case ANDROID:
-      {
-        packageName = config.android_packageName();
+        packageName = this.configFile.android_packageName();
         break;
-      }
     case IOS:
-      {
-        packageName = config.ios_CFBundleIdentifier();
+        packageName = this.configFile.ios_CFBundleIdentifier();
         break;
-      }
   }
   if (packageName === undefined || packageName.length == 0) {
-    packageName = config.packageName();
+    packageName = this.configFile.packageName();
   }
 
   return packageName;
@@ -73,38 +63,7 @@ ConfigXmlHelper.prototype.getPackageName = function(platform) {
  * @return {String} name of the project
  */
 ConfigXmlHelper.prototype.getProjectName = function() {
-  return getProjectName();
-}
-
-// endregion
-
-// region Private API
-
-/**
- * Get config parser from cordova library.
- *
- * @param {String} configFilePath absolute path to the config.xml file
- * @return {Object}
- */
-function getCordovaConfigParser(configFilePath) {
-  return new ConfigParser(configFilePath);
-}
-
-/**
- * Get absolute path to the config.xml.
- */
-function getConfigXmlFilePath() {
-  return path.join(projectRoot, CONFIG_FILE_NAME);
-}
-
-/**
- * Get project name from config.xml
- */
-function getProjectName() {
-  var configFilePath = getConfigXmlFilePath();
-  var config = getCordovaConfigParser(configFilePath);
-
-  return config.name();
+  return this.configFile.name();
 }
 
 // endregion
