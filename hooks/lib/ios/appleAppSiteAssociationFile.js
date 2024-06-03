@@ -17,9 +17,9 @@ Additional documentation regarding apple-app-site-association file can be found 
 */
 
 
-var path = require('path');
+var path = require('node:path');
 var mkpath = require('mkpath');
-var fs = require('fs');
+var fs = require('node:fs');
 var rimraf = require('rimraf');
 
 const ExtendedConfigParser = require('../ExtendedConfigParser.js');

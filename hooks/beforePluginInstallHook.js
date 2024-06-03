@@ -3,9 +3,9 @@ Hook is executed when plugin is added to the project.
 It will check all necessary module dependencies and install the missing ones locally.
 */
 
-var path = require('path');
-var fs = require('fs');
-var spawnSync = require('child_process').spawnSync;
+var path = require('node:path');
+var fs = require('node:fs');
+var { spawnSync } = require('node:child_process');
 var pluginNpmDependencies = require('../package.json').dependencies;
 var INSTALLATION_FLAG_FILE_NAME = '.npmInstalled';
 

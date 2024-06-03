@@ -6,8 +6,8 @@ Location: ProjectName/
 Script only generates content. File it self is included in the xcode project in another hook: xcodePreferences.js.
 */
 
-var path = require('path');
-var fs = require('fs');
+var path = require('node:path');
+var fs = require('node:fs');
 var plist = require('plist');
 
 const ExtendedConfigParser = require('../ExtendedConfigParser.js');

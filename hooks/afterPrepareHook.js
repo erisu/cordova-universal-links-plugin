@@ -5,7 +5,7 @@ It will inject required preferences in the platform-specific projects, based on 
 data you have specified in the projects config.xml file.
 */
 
-const path = require('path');
+const path = require('node:path');
 
 var androidManifestWriter = require('./lib/android/manifestWriter.js');
 var androidWebHook = require('./lib/android/webSiteHook.js');
