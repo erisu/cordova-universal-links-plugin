@@ -25,7 +25,6 @@
 
 <!-- Hooks -->
   <hook src="hooks/afterPrepareHook.js" type="after_prepare"/>
-  <hook src="hooks/beforePluginInstallHook.js" type="before_plugin_install" />
 
   <platform name="ios">
 <!-- Plugin inclusion in Cordova config.xml  -->
